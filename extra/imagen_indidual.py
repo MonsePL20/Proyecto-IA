@@ -1,9 +1,10 @@
 # Ejemplo de lectura y visualización de una imagen individual usando OpenCV
+# se muestra la imagen original y la redimensionada en ventanas separadas
 
 import cv2
 
 # Ruta de UNA imagen (elige cualquiera de tu dataset)
-ruta_imagen = "dataset/Calico_cat/Calico-1.jpg"
+ruta_imagen = "dataset/Calico_cat/Calico-33.jpg"
 
 # Leer imagen
 imagen = cv2.imread(ruta_imagen)

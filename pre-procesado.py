@@ -1,3 +1,4 @@
+# Pre-procesado de imágenes para el dataset de gatos y perros
 import cv2
 import os
 
@@ -25,24 +26,22 @@ for clase in os.listdir(ruta_dataset):
         imagen = cv2.imread(ruta_imagen)
 
         if imagen is None:
-            print(f"⚠️ Error al cargar: {ruta_imagen}")
+            print(f" Error al cargar: {ruta_imagen}")
             continue
 
         # Redimensionar
-        imagen_rescalada = cv2.resize(imagen, (100, 100))
+        imagen_rescalada = cv2.resize(imagen, (160, 160))
 
-        # =========================
         # VISUALIZACIÓN EN TIEMPO REAL
-        # =========================
 
         # Combinar original + rescalada
-        original_peq = cv2.resize(imagen, (100, 100))
+        original_peq = cv2.resize(imagen, (160, 160))
         combinado = cv2.hconcat([original_peq, imagen_rescalada])
 
         cv2.imshow("Escaneo en proceso (Original vs Rescalada)", combinado)
 
         # Espera corta (50 ms)
-        if cv2.waitKey(50) & 0xFF == 27:  # tecla ESC
+        if cv2.waitKey(50) & 0xFF == 27:  # tecla ESC para salir
             print("Proceso detenido por el usuario")
             break
 

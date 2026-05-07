@@ -1,4 +1,5 @@
 # Ejemplo de lectura y visualización de imágenes desde una carpeta usando OpenCV
+# solo muestrando la imagen sin texto ni contadores
 
 import cv2
 import os
@@ -14,6 +15,8 @@ for archivo in os.listdir(ruta):
 
 # Mostrar la imagen
     cv2.imshow("Imagen", img)
-    cv2.waitKey(10)
+    cv2.waitKey(60)  # Espera 60 ms entre imágenes
 
 cv2.destroyAllWindows()
+
+
