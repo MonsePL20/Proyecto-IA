@@ -1,8 +1,10 @@
+# Ejemplo de lectura y visualización de imágenes desde una carpeta usando OpenCV
+
 import cv2
 import os
 
 # Ruta del dataset (elige cualquiera de las carpetas de tu dataset)
-ruta = "dataset/Bombay"
+ruta = "dataset/Bombay_cat"
 
 # Recorrer cada imagen en la carpeta
 for archivo in os.listdir(ruta):

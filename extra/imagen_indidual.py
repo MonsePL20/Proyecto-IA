@@ -1,7 +1,9 @@
+# Ejemplo de lectura y visualización de una imagen individual usando OpenCV
+
 import cv2
 
 # Ruta de UNA imagen (elige cualquiera de tu dataset)
-ruta_imagen = "dataset/Calico/Calico-21.jpg"
+ruta_imagen = "dataset/Calico_cat/Calico-1.jpg"
 
 # Leer imagen
 imagen = cv2.imread(ruta_imagen)
