@@ -1,4 +1,8 @@
-# Pre-procesado de imágenes para el dataset de gatos y perros
+# Pre-procesado de imágenes para el dataset de gatos y perros todo el dataset
+# Este script realiza varias transformaciones en las imágenes del dataset, incluyendo:
+# - Reescalado a un tamaño uniforme (160x160 píxeles)
+
+
 import cv2
 import os
 

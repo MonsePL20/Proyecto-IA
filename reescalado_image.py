@@ -15,7 +15,7 @@ for archivo in os.listdir(ruta):
         continue
 
     # Imagen original
-    original = cv2.resize(img, (160,160))
+    original = cv2.resize(ruta_imagen)
 
     # Imagen escalada
     escalada = cv2.resize(img, (120,120))
@@ -31,3 +31,4 @@ for archivo in os.listdir(ruta):
     cv2.waitKey(60)
 
 cv2.destroyAllWindows()
+

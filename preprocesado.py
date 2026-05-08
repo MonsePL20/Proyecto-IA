@@ -13,9 +13,7 @@ ruta_salida = "procesadas"
 
 total_imagenes = 0
 
-print("====================================")
-print("LEYENDO Y PROCESANDO DATASET...")
-print("====================================\n")
+print("LEYENDO Y PROCESANDO DATASET...\n")
 
 # Recorrer carpetas principales
 for clase in os.listdir(ruta_dataset):
@@ -47,7 +45,7 @@ for clase in os.listdir(ruta_dataset):
 
         # Verificar errores
         if imagen is None:
-            print(f" Error al cargar: {ruta_imagen}")
+            print(f"Error al cargar: {ruta_imagen}")
             continue
 
         # ===================================
@@ -58,12 +56,32 @@ for clase in os.listdir(ruta_dataset):
         # ===================================
         # ESCALA DE GRISES
         # ===================================
-        gris = cv2.cvtColor(imagen_rescalada, cv2.COLOR_BGR2GRAY)
+        gris = cv2.cvtColor(
+            imagen_rescalada,
+            cv2.COLOR_BGR2GRAY
+        )
 
         # ===================================
-        # IMAGEN BINARIA
+        # IMAGEN BINARIA SIMPLE
         # ===================================
-        _, binaria = cv2.threshold(gris, 127, 255, cv2.THRESH_BINARY)
+        _, binaria = cv2.threshold(
+            gris,
+            127,
+            255,
+            cv2.THRESH_BINARY
+        )
+
+        # ===================================
+        # BINARIA ADAPTATIVA
+        # ===================================
+        binaria_adaptativa = cv2.adaptiveThreshold(
+            gris,
+            255,
+            cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+            cv2.THRESH_BINARY,
+            11,
+            2
+        )
 
         # ===================================
         # SUAVIZADO + CANNY
@@ -75,7 +93,9 @@ for clase in os.listdir(ruta_dataset):
         # ===================================
         # ETIQUETADO DE OBJETOS
         # ===================================
-        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(binaria)
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(
+            binaria_adaptativa
+        )
 
         etiquetada = imagen_rescalada.copy()
 
@@ -90,43 +110,79 @@ for clase in os.listdir(ruta_dataset):
                 w = stats[i, cv2.CC_STAT_WIDTH]
                 h = stats[i, cv2.CC_STAT_HEIGHT]
 
-                cv2.rectangle(etiquetada,
-                              (x, y),
-                              (x + w, y + h),
-                              (0, 255, 0),
-                              1)
+                cv2.rectangle(
+                    etiquetada,
+                    (x, y),
+                    (x + w, y + h),
+                    (0, 255, 0),
+                    1
+                )
 
         # ===================================
         # GUARDAR IMÁGENES
         # ===================================
 
         cv2.imwrite(
-            os.path.join(ruta_salida, "reescaladas", clase, archivo),
+            os.path.join(
+                ruta_salida,
+                "reescaladas",
+                clase,
+                archivo
+            ),
             imagen_rescalada
         )
 
         cv2.imwrite(
-            os.path.join(ruta_salida, "grises", clase, archivo),
+            os.path.join(
+                ruta_salida,
+                "grises",
+                clase,
+                archivo
+            ),
             gris
         )
 
         cv2.imwrite(
-            os.path.join(ruta_salida, "binarias", clase, archivo),
+            os.path.join(
+                ruta_salida,
+                "binarias",
+                clase,
+                archivo
+            ),
             binaria
         )
 
         cv2.imwrite(
-            os.path.join(ruta_salida, "bordes", clase, archivo),
+            os.path.join(
+                ruta_salida,
+                "bordes",
+                clase,
+                archivo
+            ),
             bordes
         )
 
         cv2.imwrite(
-            os.path.join(ruta_salida, "etiquetadas", clase, archivo),
+            os.path.join(
+                ruta_salida,
+                "etiquetadas",
+                clase,
+                archivo
+            ),
             etiquetada
         )
 
         # ===================================
-        # VISUALIZACIÓN EN TIEMPO REAL
+        # COMPARACIÓN DE BINARIZACIÓN
+        # ===================================
+
+        comparacion_binarias = cv2.hconcat([
+            cv2.cvtColor(binaria, cv2.COLOR_GRAY2BGR),
+            cv2.cvtColor(binaria_adaptativa, cv2.COLOR_GRAY2BGR)
+        ])
+
+        # ===================================
+        # VISUALIZACIÓN GENERAL
         # ===================================
 
         combinado = cv2.hconcat([
@@ -142,6 +198,11 @@ for clase in os.listdir(ruta_dataset):
             combinado
         )
 
+        cv2.imshow(
+            "Binaria Simple (Izquierda) vs Adaptativa (Derecha)",
+            comparacion_binarias
+        )
+
         # ESC para salir
         if cv2.waitKey(50) & 0xFF == 27:
             print("Proceso detenido por el usuario")
@@ -150,11 +211,9 @@ for clase in os.listdir(ruta_dataset):
         contador_clase += 1
         total_imagenes += 1
 
-    print(f"Imágenes procesadas: {contador_clase}\n")
+    print(f"Imagenes procesadas: {contador_clase}\n")
 
-print("====================================")
 print(f"TOTAL DE IMÁGENES: {total_imagenes}")
-print("====================================")
 
 cv2.destroyAllWindows()
 

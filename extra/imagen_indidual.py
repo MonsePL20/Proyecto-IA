@@ -4,7 +4,7 @@
 import cv2
 
 # Ruta de UNA imagen (elige cualquiera de tu dataset)
-ruta_imagen = "dataset/Calico_cat/Calico-33.jpg"
+ruta_imagen = "dataset/Calico_cat/Calico-28.jpg"
 
 # Leer imagen
 imagen = cv2.imread(ruta_imagen)
